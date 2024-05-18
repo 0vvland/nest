@@ -6,7 +6,7 @@ export class OrderDto implements IOrder {
   cardNumber: string;
   tourId: string;
   userId: string;
-  _id: string;
+  _id?: string;
   constructor(
     age: string,
     birthDay: string,

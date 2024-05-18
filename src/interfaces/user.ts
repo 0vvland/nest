@@ -3,5 +3,5 @@ export interface IUser {
   cardNumber: string;
   login: string;
   email: string;
-  id: string;
+  _id?: string;
 }

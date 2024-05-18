@@ -52,7 +52,7 @@ export class UsersService {
         HttpStatus.FORBIDDEN,
       );
     }
-    return { user, token: this.jwtService.sign({ login }) };
+    return { user, token: this.jwtService.sign({ id: user._id }) };
   }
 
   async register(data) {
@@ -64,7 +64,7 @@ export class UsersService {
       );
     }
     user = await this.create(data);
-    return { user, token: this.jwtService.sign({ login: data.login }) };
+    return { user, token: this.jwtService.sign({ id: user._id }) };
   }
 
   async checkAuthUser(login: string, password: string) {

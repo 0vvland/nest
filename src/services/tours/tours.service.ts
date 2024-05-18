@@ -18,21 +18,25 @@ export class ToursService {
     return this.tourModel.findById(id);
   }
 
-  generateTours() {
-    for (let i = 0; i <= this.tourCount; i++) {
-      const tour = new TourDto(
-        'test' + i,
-        'test desc',
-        'test operator',
-        '1234',
-        '',
-        '',
-        '',
-      );
-      const tourData = new this.tourModel(tour);
-      tourData.save();
-    }
-    return [];
+  async generateTours() {
+    await Promise.all(
+      Array(this.tourCount)
+        .fill(undefined)
+        .map((_, i) => {
+          const tour = new TourDto(
+            'test' + i,
+            'test desc',
+            'test operator',
+            '1234',
+            '',
+            '',
+            '',
+          );
+          const tourData = new this.tourModel(tour);
+          return tourData.save();
+        }),
+    );
+    return this.tourModel.find();
   }
 
   async deleteTours() {
