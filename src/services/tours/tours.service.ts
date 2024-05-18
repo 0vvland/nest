@@ -42,4 +42,22 @@ export class ToursService {
   async deleteTours() {
     return this.tourModel.deleteMany({});
   }
+
+  createTour(data) {
+    const tour = new TourDto(
+      data.name,
+      data.description,
+      data.operator,
+      data.price,
+      data.img,
+      '',
+      '',
+    );
+    const orderData = new this.tourModel(tour);
+    return orderData.save();
+  }
+
+  getByName(name: string) {
+    return this.tourModel.find({ name: { $regex: name, $options: 'i' } });
+  }
 }
