@@ -7,17 +7,22 @@ import { jwtConstants } from '../constants/jwt';
 import { JwtStrategyService } from '../services/authentication/jwt-strategy/jwt-strategy.service';
 import { Order, OrderSchema } from '../schemas/order';
 import { OrdersService } from '../services/orders/orders.service';
+import { ToursService } from '../services/tours/tours.service';
+import { Tour, TourSchema } from '../schemas/tour';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Order.name, schema: OrderSchema }]),
+    MongooseModule.forFeature([
+      { name: Order.name, schema: OrderSchema },
+      { name: Tour.name, schema: TourSchema },
+    ]),
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '60m' },
     }),
   ],
-  providers: [JwtStrategyService, OrdersService],
+  providers: [JwtStrategyService, OrdersService, ToursService],
   controllers: [OrdersController],
 })
 export class OrdersModule {}

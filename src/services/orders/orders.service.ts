@@ -15,7 +15,7 @@ export class OrdersService {
     return orderData.save();
   }
 
-  getAll() {
-    return this.orderModel.find();
+  getAll(userId: string) {
+    return this.orderModel.find({ userId });
   }
 }

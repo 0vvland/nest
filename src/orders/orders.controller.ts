@@ -9,10 +9,14 @@ import {
 import { OrdersService } from '../services/orders/orders.service';
 import { OrderDto } from '../dto/order.dto';
 import { JwtAuthGuardService } from '../services/authentication/jwt-auth.guard/jwt-auth.guard.service';
+import { ToursService } from '../services/tours/tours.service';
 
 @Controller('orders')
 export class OrdersController {
-  constructor(private orderService: OrdersService) {}
+  constructor(
+    private orderService: OrdersService,
+    private tourService: ToursService,
+  ) {}
 
   @UseGuards(JwtAuthGuardService)
   @Post()
@@ -29,7 +33,19 @@ export class OrdersController {
 
   @UseGuards(JwtAuthGuardService)
   @Get()
-  getAll() {
-    return this.orderService.getAll();
+  async getAll(@Request() req: any) {
+    const tours = await this.tourService.getAll();
+    const orders = await this.orderService.getAll(req.user.userId);
+
+    const ret = orders.map((order) => {
+      const obj: any = order.toObject();
+      const tour = tours.find(({ _id }) => obj.tourId === _id.toString());
+
+      if (tour) {
+        obj.tour = tour.toObject();
+      }
+      return obj;
+    });
+    return ret;
   }
 }
